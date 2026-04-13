@@ -2,9 +2,15 @@ services:
   - type: web
     name: biosense-ml-api
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    plan: free
+    buildCommand: |
+      pip install --upgrade pip
+      pip install numpy==1.26.4
+      pip install -r requirements.txt
     startCommand: gunicorn app:app --workers 1 --bind 0.0.0.0:$PORT
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
       - key: THINGSPEAK_CHANNEL_ID
         value: "3317281"
       - key: THINGSPEAK_READ_API_KEY
